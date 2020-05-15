@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 // import logo from './logo.svg';
 import NavigationDrawer from './components/NavigationDrawer';
 import './App.css';
-// import axios from 'axios';
+
 
 class App extends Component{
 
@@ -12,7 +12,6 @@ class App extends Component{
             account_id: null,
     }
 
-
     checkLoginStatus(){
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
@@ -21,28 +20,41 @@ class App extends Component{
             var accessToken = urlParams.get('access_token');
             var name = urlParams.get('nickname');
             var accountID = urlParams.get('account_id');
-            this.setState({
-                access_token: accessToken,
-                nickname: name,
-                account_id: accountID
-            })
-            window.history.pushState('','', '/');
-        }else
-        {
-
+            var expiresAt = urlParams.get('expires_at');
+            window.history.pushState('','', '/Dashboard');
+            localStorage.setItem('access_token', accessToken);
+            localStorage.setItem('nickname', name);
+            localStorage.setItem('account_id', accountID);
+            localStorage.setItem('expires_at', expiresAt);
+            // this.setState({
+            //     access_token: accessToken,
+            //     nickname: name,
+            //     account_id: accountID
+            // })
         }
+    }
+
+    checkTokenExpiration()
+    {
+        var currentTime = Math.floor(new Date().getTime()/1000);
+        var expireTime = parseInt(localStorage.getItem('expires_at'),10);
+
+        if(currentTime > expireTime)
+            localStorage.clear()
     }
 
     componentDidMount()
     {
         this.checkLoginStatus()
+        this.checkTokenExpiration();
     }
 
     render(){
         return(
             <div className="App">
-                <NavigationDrawer userInfo = {this.state}/>
+                <NavigationDrawer/>
             </div>
+
           );
         }
 }
