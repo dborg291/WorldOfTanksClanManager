@@ -16,6 +16,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { BrowserRouter as Router, Switch, Route, } from "react-router-dom";
+import Strongholds from '../views/Strongholds'
 
 const drawerWidth = 240;
 
@@ -62,15 +64,14 @@ function NavigationDrawer(props) {
   };
 
 function isLoggedIn(){
-
-    if(props.userInfo.nickname === null)
+    if(localStorage.length === 0)
     {
-        return <Button variant="contained" color="default" href="https://api.worldoftanks.com/wot/auth/login/?application_id=3ccd22879504be63b4ae8813635ce3d8&redirect_uri=http://localhost:3000/" disableElevation>Login</Button>
+        return <Button variant="contained" color="default" href="https://api.worldoftanks.com/wot/auth/login/?application_id=3ccd22879504be63b4ae8813635ce3d8&redirect_uri=http://localhost:3000/Dashboard" disableElevation>Login</Button>
     }else{
         return (
             <div>
-                <Button variant="contained" style = {{backgroundColor : '#fff'}} href="" disableElevation>{props.userInfo.nickname.substring(0,17)}</Button>
-                <Button  color="secondary" href="" disableElevation>Signout</Button>
+                <Button variant="contained" style = {{backgroundColor : '#fff'}} href="" disableElevation>{localStorage.getItem('nickname').substring(0,17)}</Button>
+                <Button color="secondary" href="/" onClick ={() => {localStorage.clear()}} disableElevation>Signout</Button>
             </div>
         )
     }
@@ -83,8 +84,8 @@ function isLoggedIn(){
       <Divider />
       <List>
         {['Dashboard', 'Strongholds', 'Clan Wars'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{index === 0 ? <AssignmentIcon /> : <AssistantPhotoIcon />}</ListItemIcon>
+          <ListItem button key={text} component="a" href={"/"+text}>
+            <ListItemIcon >{index === 0 ? <AssignmentIcon /> : <AssistantPhotoIcon />}</ListItemIcon>
             <ListItemText primary={text} />
           </ListItem>
         ))}
@@ -150,6 +151,21 @@ function isLoggedIn(){
         <Typography paragraph>
           Welcome to Clan Manager for World of Tanks
         </Typography>
+        <div style= {{textAlign: 'left'}}>
+            <Router>
+                <Switch>
+                    <Route path='/Dashboard'>
+                        <h1>Dashboard</h1>
+                    </Route>
+                    <Route path='/Strongholds'>
+                        <Strongholds/>
+                    </Route>
+                    <Route path='/Clan Wars'>
+                        <h1>Clan Wars</h1>
+                    </Route>
+                </Switch>
+            </Router>
+        </div>
         <Typography paragraph>
         </Typography>
       </main>
