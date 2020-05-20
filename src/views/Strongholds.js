@@ -1,47 +1,78 @@
 import React, { Component } from 'react';
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 import axios from 'axios';
+import Reserve from '../components/Reserve'
+import { Paper } from '@material-ui/core';
 
 export default class Strongholds extends Component {
 
-    style = {
-        Paper: {padding: 20, margin: 10}
-    }
+    state = {
+        reserves: [],
+        isLoading: true,
+        errors: null,
+        activeReserves: []
 
-    getReserves()
+    };
+
+    constructor(props)
     {
-        axios.get('https://api.worldoftanks.com/wot/stronghold/clanreserves/?application_id=3ccd22879504be63b4ae8813635ce3d8&access_token=624f91091c815526608e899b4f597988e2938dc3', {
-            application_id: '3ccd22879504be63b4ae8813635ce3d8',
-            access_token: localStorage.getItem('access_token')
+        super(props);
+
+        axios.get('https://api.worldoftanks.com/wot/stronghold/clanreserves/?application_id=3ccd22879504be63b4ae8813635ce3d8&access_token=' + localStorage.getItem('access_token'))
+          .then(response =>
+            response.data.data.map(reserve => ({
+                name: `${reserve.name}`,
+                bonus_type: `${reserve.bonus_type}`,
+                disposable: `${reserve.disposable}`,
+                in_stock: reserve.in_stock,
+                type: `${reserve.type}`,
+              }))
+          ).then(reserves => {
+              this.setState({
+                  reserves,
+                  isLoading: false
+              })
           })
-          .then((response) => {
-            var data = response.data.data;
-            // return data.forEach((element) => (
-            //     console.log(element.name)
-            // ));
-            this.setState({reserve: data})
-            console.log(data)
-          }, (error) => {
-            console.log(error);
-          });
+          .catch(error => this.setState({ error, isLoading: false }));
     }
 
-    componentDidMount(){
-        this.getReserves()
-        console.log(this.state)
+    renderReserves()
+    {
+        return this.state.reserves.map((element) => (
+            <div>
+                {(() => {
+                    if(["Additional Briefing", "Battle Payments", "Military Maneuvers", "Tactical Training"].includes(element.name))
+                    {
+                        console.log(element)
+                        return <Reserve reserve={ element } />;
+                    }
+                })()}
+            </div>
+        
+        ));
+            // Additional Briefing
+            // Airstrike
+            // Artillery Strike
+            // Battle Payments
     }
 
     render() {
         return (
-            <div>
-                <Grid container>
-                    <Grid item sm>
-                        <Paper style={this.style.Paper}>Hello</Paper>
-                    </Grid>
-                    <Grid item sm>
-                        <Paper style={this.style.Paper}>WOW</Paper>
-                    </Grid>
+            <div >
+                <div style = {{display: 'inline-block'}}>
+                {(() => {
+                        if(this.state.activeReserves.length === 0) 
+                        {
+                            return(
+                            <Paper style={{ backgroundColor : '#90EE90', padding:8}}>
+                                Wow
+                            </Paper>)
+                        }
+                    })()}
+                </div>
+                <Grid container style={{justifyContent: 'center'}}>
+                    {/* <Reserves reserves= {this.state}/> */}
+                    {this.renderReserves()}
                 </Grid>
             </div>
         );

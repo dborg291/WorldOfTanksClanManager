@@ -66,6 +66,7 @@ function NavigationDrawer(props) {
 function isLoggedIn(){
     if(localStorage.length === 0)
     {
+        console.log(localStorage.length)
         return <Button variant="contained" color="default" href="https://api.worldoftanks.com/wot/auth/login/?application_id=3ccd22879504be63b4ae8813635ce3d8&redirect_uri=http://localhost:3000/Dashboard" disableElevation>Login</Button>
     }else{
         return (
@@ -148,9 +149,6 @@ function isLoggedIn(){
       </nav>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <Typography paragraph>
-          Welcome to Clan Manager for World of Tanks
-        </Typography>
         <div style= {{textAlign: 'left'}}>
             <Router>
                 <Switch>
@@ -166,8 +164,6 @@ function isLoggedIn(){
                 </Switch>
             </Router>
         </div>
-        <Typography paragraph>
-        </Typography>
       </main>
     </div>
   );
