@@ -1,0 +1,16 @@
+{
+    "routes": [
+      {
+        "route": "/dashboard",
+        "serve": "/"
+      },
+      {
+        "route": "/strongholds",
+        "serve": "/"
+      },
+      {
+        "route": "/clan%20wars",
+        "serve": "/"
+      }
+    ]
+  }

@@ -54,10 +54,9 @@ export function NavigationDrawer(props: any): ReactElement {
     };
 
     function isLoggedIn(): ReactElement {
-        if (localStorage.length === 0) {
-            console.log(localStorage.length);
-            return <Button variant="contained" color="default" href="https://api.worldoftanks.com/wot/auth/login/?application_id=3ccd22879504be63b4ae8813635ce3d8&redirect_uri=https://www.wotclanmanager.com/strongholds" disableElevation>Login</Button>;
-        } else {
+        if (localStorage.length === 0)
+            return <Button variant="contained" color="default" href="https://api.worldoftanks.com/wot/auth/login/?application_id=3ccd22879504be63b4ae8813635ce3d8&redirect_uri=https://www.wotclanmanager.com/" disableElevation>Login</Button>;
+        else {
             return (
                 <div>``
                     <Button variant="contained" style={{ backgroundColor: '#fff' }} href="" disableElevation>
@@ -79,7 +78,7 @@ export function NavigationDrawer(props: any): ReactElement {
             <Divider />
             <List>
                 {['Dashboard', 'Strongholds', 'Clan Wars'].map((text, index) => (
-                    <ListItem button key={text} component="a" href={`/${text}`}>
+                    <ListItem button key={text} component="a" href={`/${text.toLowerCase()}`}>
                         <ListItemIcon >{index === 0 ? <AssignmentInd /> : <AssistantPhoto />}</ListItemIcon>
                         <ListItemText primary={text} />
                     </ListItem>
@@ -131,13 +130,13 @@ export function NavigationDrawer(props: any): ReactElement {
                 <div style={{ textAlign: 'left' }}>
                     <Router>
                         <Switch>
-                            <Route path='/Dashboard'>
+                            <Route path='/dashboard'>
                                 <h1>Dashboard</h1>
                             </Route>
-                            <Route path='/Strongholds'>
+                            <Route path='/strongholds'>
                                 <Strongholds />
                             </Route>
-                            <Route path='/Clan Wars'>
+                            <Route path='/clan Wars'>
                                 <h1>Clan Wars</h1>
                             </Route>
                         </Switch>
