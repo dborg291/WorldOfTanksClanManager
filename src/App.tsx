@@ -1,7 +1,6 @@
 import React, { Component, ReactElement } from 'react';
 
-// import logo from './logo.svg';
-import NavigationDrawer from './components/NavigationDrawer';
+import { NavigationDrawer } from './components/NavigationDrawer';
 import { getUrlParam } from './utils/getUrlParam';
 
 interface IAccountDetails {
@@ -11,10 +10,23 @@ interface IAccountDetails {
     expiresAt: string;
 }
 
+export class App extends Component {
 
-class App extends Component {
+    public componentDidMount(): void {
+        this.checkLoginStatus();
+        this.checkTokenExpiration();
+    }
 
-    checkLoginStatus(): void {
+    public render(): ReactElement {
+        return (
+            <div className="App">
+                <NavigationDrawer />
+            </div>
+
+        );
+    }
+
+    private checkLoginStatus(): void {
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
         if (urlParams.get('status') === 'ok') {
@@ -24,7 +36,7 @@ class App extends Component {
                 nickname: getUrlParam(urlParams, 'nickname'),
                 accountId: getUrlParam(urlParams, 'account_id'),
                 expiresAt: getUrlParam(urlParams, 'expires_at')
-            }
+            };
 
             window.history.pushState('', '', '/Dashboard');
 
@@ -35,27 +47,12 @@ class App extends Component {
         }
     }
 
-    checkTokenExpiration(): void {
-        var currentTime = Math.floor(new Date().getTime() / 1000);
-        var expireTime = parseInt(localStorage.getItem('expires_at') ?? '', 10);
+    private checkTokenExpiration(): void {
+        const currentTime = Math.floor(new Date().getTime() / 1000);
+        const expireTime = parseInt(localStorage.getItem('expires_at') ?? '', 10);
 
-        if (currentTime > expireTime)
-            localStorage.clear()
-    }
-
-    componentDidMount(): void {
-        this.checkLoginStatus()
-        this.checkTokenExpiration();
-    }
-
-    render(): ReactElement {
-        return (
-            <div className="App">
-                <NavigationDrawer />
-            </div>
-
-        );
+        if (currentTime > expireTime) {
+            localStorage.clear();
+        }
     }
 }
-
-export default App;

@@ -90,6 +90,7 @@ export function NavigationDrawer(props: any): ReactElement {
     );
 
     const container = window !== undefined ? () => window().document.body : undefined;
+    const direction: "bottom" | "left" | "right" | "top" | undefined = theme.direction === 'rtl' ? 'right' : 'left';
     return (
         <div className={classes.root}>
             <CssBaseline />
@@ -114,13 +115,11 @@ export function NavigationDrawer(props: any): ReactElement {
                     <Drawer
                         container={container}
                         variant="temporary"
-                        anchor={theme.direction === 'rtl' ? 'right' : 'left'}
+                        anchor={direction}
                         open={mobileOpen}
                         onClose={handleDrawerToggle}
-                        classes={{
-                            paper: classes.drawerPaper
-                        }} ModalProps={{ keepMounted: true // Better open performance on mobile. }} >
-                        {drawer}
+                        classes={{paper: classes.drawerPaper}
+                        } ModalProps={{ keepMounted: true }} > {drawer}
                     </Drawer>
                 </Hidden>
                 <Hidden xsDown implementation="css">
