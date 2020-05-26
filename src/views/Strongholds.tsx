@@ -33,7 +33,7 @@ export class Strongholds extends Component {
         super(props);
     }
 
-    public componentDidMount() {
+    public componentDidMount(): void {
         Axios.get(`https://api.worldoftanks.com/wot/stronghold/clanreserves/?application_id=3ccd22879504be63b4ae8813635ce3d8&access_token=${localStorage.getItem('access_token')}`)
             .then(response =>
                 // tslint:disable-next-line
