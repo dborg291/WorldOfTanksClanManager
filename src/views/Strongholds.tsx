@@ -61,7 +61,7 @@ export class Strongholds extends Component {
                         console.log('creating card...', reserveCard);
                         return (<Reserve {...reserveCard} />);
                     } else {
-                        return;
+                        return undefined;
                     }
                 })}
             </div>
