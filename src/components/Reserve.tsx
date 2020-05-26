@@ -29,10 +29,6 @@ export interface IBonusValue {
 
 export class Reserve extends Component<IReserveCard> {
 
-    constructor(props: Readonly<IReserveCard>) {
-        super(props);
-    }
-
     public render(): React.ReactElement {
         console.log('reserve render func', this.props);
         return (

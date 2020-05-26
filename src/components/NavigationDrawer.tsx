@@ -59,7 +59,7 @@ export function NavigationDrawer(props: any): ReactElement {
             return <Button variant="contained" color="default" href="https://api.worldoftanks.com/wot/auth/login/?application_id=3ccd22879504be63b4ae8813635ce3d8&redirect_uri=http://localhost:3000/Dashboard" disableElevation>Login</Button>;
         } else {
             return (
-                <div>
+                <div>``
                     <Button variant="contained" style={{ backgroundColor: '#fff' }} href="" disableElevation>
                         {
                         localStorage.getItem('nickname')

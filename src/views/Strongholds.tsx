@@ -27,12 +27,6 @@ export class Strongholds extends Component {
         activeReserves: []
     };
 
-    // tslint:disable-next-line: no-any
-    constructor(props: any) {
-        // tslint:disable-next-line: no-unsafe-any
-        super(props);
-    }
-
     public componentDidMount(): void {
         Axios.get(`https://api.worldoftanks.com/wot/stronghold/clanreserves/?application_id=3ccd22879504be63b4ae8813635ce3d8&access_token=${localStorage.getItem('access_token')}`)
             .then(response =>
