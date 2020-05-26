@@ -54,9 +54,10 @@ export function NavigationDrawer(props: any): ReactElement {
     };
 
     function isLoggedIn(): ReactElement {
-        if (localStorage.length === 0)
+        if (localStorage.length === 0) {
+            console.log(localStorage.length);
             return <Button variant="contained" color="default" href="https://api.worldoftanks.com/wot/auth/login/?application_id=3ccd22879504be63b4ae8813635ce3d8&redirect_uri=https://www.wotclanmanager.com/" disableElevation>Login</Button>;
-        else {
+        } else {
             return (
                 <div>``
                     <Button variant="contained" style={{ backgroundColor: '#fff' }} href="" disableElevation>

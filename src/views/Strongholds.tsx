@@ -56,7 +56,14 @@ export class Strongholds extends Component {
     public render(): ReactElement {
         return (
             <div>
-                {this.state.reserveCards.map((reserveCard: IReserveCard) => { console.log('creating card...', reserveCard); return (<Reserve {...reserveCard} />); })}
+                {this.state.reserveCards.map((reserveCard: IReserveCard) => {
+                    if (["Additional Briefing", "Battle Payments", "Military Maneuvers", "Tactical Training"].includes(reserveCard.name)) {
+                        console.log('creating card...', reserveCard);
+                        return (<Reserve {...reserveCard} />);
+                    } else {
+                        return;
+                    }
+                })}
             </div>
         );
     }
