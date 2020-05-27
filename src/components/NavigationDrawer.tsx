@@ -1,12 +1,7 @@
+import { AppBar, Button, CssBaseline, Divider, Drawer, Hidden, IconButton, List, ListItem, ListItemIcon, ListItemText, makeStyles, Toolbar, Typography, useTheme } from '@material-ui/core';
+import { AssignmentInd, AssistantPhoto, Menu as MenuIcon } from '@material-ui/icons';
 import React, { ReactElement } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-
-import {
-    AppBar, Button, CssBaseline, Divider, Drawer, Hidden, IconButton, List, ListItem, ListItemIcon,
-    ListItemText, makeStyles, Toolbar, Typography, useTheme
-} from '@material-ui/core';
-import { AssignmentInd, AssistantPhoto, Menu as MenuIcon } from '@material-ui/icons';
-
 import { Strongholds } from '../views/Strongholds';
 
 const drawerWidth: number = 240;
@@ -59,7 +54,7 @@ export function NavigationDrawer(props: any): ReactElement {
             return <Button variant="contained" color="default" href="https://api.worldoftanks.com/wot/auth/login/?application_id=3ccd22879504be63b4ae8813635ce3d8&redirect_uri=https://www.wotclanmanager.com/" disableElevation>Login</Button>;
         } else {
             return (
-                <div>``
+                <div>
                     <Button variant="contained" style={{ backgroundColor: '#fff' }} href="" disableElevation>
                         {
                         localStorage.getItem('nickname')

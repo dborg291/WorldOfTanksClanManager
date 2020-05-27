@@ -1,22 +1,19 @@
+import { Card } from '@material-ui/core';
 import axios from 'axios';
-import React, { Component, Fragment } from 'react';
-import { IReserveCard } from 'views/Strongholds';
-
-import Button from '@material-ui/core/Button';
-import Divider from '@material-ui/core/Divider';
-import Paper from '@material-ui/core/Paper';
-
+import { PrimaryButton, Separator, Text } from 'office-ui-fabric-react';
+import React, { Component } from 'react';
 import AdditionalBriefing from '../images/additional_briefing.png';
 import BattlePayents from '../images/battle_payments.png';
 import MilitaryManeuvers from '../images/military_maneuvers.png';
 import TacticalTraining from '../images/tactical_training.png';
+import { IReserveCard } from '../views/Strongholds';
 
 export interface IReserve {
-    actionTime: number;
+    action_time: number;
     activatedAt?: string;
     activeTill?: string;
     amount: number;
-    bonusValues: IBonusValue[];
+    bonus_values: IBonusValue[];
     level: number;
     status: string;
     x_level_only: boolean;
@@ -24,7 +21,7 @@ export interface IReserve {
 
 export interface IBonusValue {
     value: number;
-    battleType: string;
+    battle_type: string;
 }
 
 export class Reserve extends Component<IReserveCard> {
@@ -32,59 +29,51 @@ export class Reserve extends Component<IReserveCard> {
     public render(): React.ReactElement {
         console.log('reserve render func', this.props);
         return (
-            <Paper style={{ margin: 8 }}>
-                <div>
-                    <div style={{ textAlign: "center", paddingTop: 8, fontSize: 20 }}>
-                        <strong>{this.props.name}</strong>
-                    </div>
+            <div style={{width: 280}}>
+                    <Card style= {{margin: 6}}>
+                    <Text variant='xLarge' style={{marginLeft: 8, marginTop: 4}}>{this.props.name}<br/></Text>
                     {(() => {
-                        switch (this.props.name) {
-                            case "Additional Briefing": return <img src={AdditionalBriefing} alt="Additional Briefing" style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />;
-                            case "Battle Payments": return <img src={BattlePayents} alt="Battle Payments" />;
-                            case "Military Maneuvers": return <img src={MilitaryManeuvers} alt="Military Maneuvers" />;
-                            case "Tactical Training": return <img src={TacticalTraining} alt="Tactical Training" />;
-                            default: return undefined;
-                        }
-                    })()}
-                    <div style={{ textAlign: 'center' }}>
-                        {
-                            this.props.inStock.map((reserve: IReserve, i: number) => (
-                                <Fragment>
-                                    <div style={{ fontSize: 16 }}>
-                                        <Divider />
-                                        <div id={this.props.name + '.' + i} style={{ padding: 8 }}>
-                                            Level: {reserve.level} <br />
-                                            Bonuses<br />
+                            switch (this.props.name) {
+                                case "Additional Briefing": return <img src={AdditionalBriefing} alt="Additional Briefing" style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />;
+                                case "Battle Payments": return <img src={BattlePayents} alt="Battle Payments" style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}/>;
+                                case "Military Maneuvers": return <img src={MilitaryManeuvers} alt="Military Maneuvers" style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}/>;
+                                case "Tactical Training": return <img src={TacticalTraining} alt="Tactical Training" style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}/>;
+                                default: return undefined;
+                            }
+                        })()}
+                            {
+                                this.props.inStock.map((reserve: IReserve, i: number) => (
+                                    <div style={{ fontSize: 16 }} key={i}>
+                                        <Separator />
+                                        <div style={{marginLeft: 8}}>
+                                            <Text variant='mediumPlus'>Level: {reserve.level} <br /></Text>
+                                            <Text variant='mediumPlus'>Bonuses:<br /></Text>
                                             {
-                                                reserve.bonusValues?.map((bonus: IBonusValue) => (
-                                                    <div>
-                                                        {bonus.battleType}:
-                                                        <div>
-                                                            {bonus.value * 100}%
-                                                        </div>
-                                                    </div>
+                                                reserve.bonus_values?.map((bonus: IBonusValue) => (
+                                                    <ul style={{paddingLeft: 20, margin: 0, marginRight: 8}} key={bonus.battle_type+'.'+i}>
+                                                        <li><Text>{bonus.battle_type}: {bonus.value * 100}%</Text></li>
+                                                    </ul>
                                                 ))
                                             }
-                                    Amount in Stock: {reserve.amount}<br />
+                                            <Text variant= 'mediumPlus'>Durration: {reserve.action_time / 3600} hours <br /></Text>
+                                            <Text variant='mediumPlus'>Amount in Stock: {reserve.amount}<br /></Text>
                                         </div>
                                         {(() => {
                                             if (reserve.status === "active") {
-                                                return <div style={{ color: 'green' }}>ACTIVE NOW</div>;
+                                                return <Text variant='large' style={{marginLeft: '55%', marginTop: 8, marginBottom: 6}} >Currently Active</Text>;
                                             } else if (reserve.status === "ready_to_activate") {
-                                                return <Button color="primary" onClick={() => { this.activateReserve(reserve.level, this.props.reserveType) }} disableElevation>Activate</Button>
+                                                return <PrimaryButton style={{marginLeft: '55%', marginTop: 8, marginBottom: 6}} text="Activate" onClick={() => { this.activateReserve(reserve.level, this.props.reserveType); }} allowDisabledFocus />;
                                             } else if (reserve.status === "cannot_be_activated") {
-                                                return <div style={{ color: 'red' }}>Cannot be Activated</div>;
+                                                return <PrimaryButton style={{marginLeft: '55%', marginTop: 8, marginBottom: 6}} text="Activate" onClick={() => { this.activateReserve(reserve.level, this.props.reserveType); }} allowDisabledFocus disabled={true} />;
                                             } else {
                                                 return;
                                             }
                                         })()}
                                     </div>
-                                </Fragment>
-                            ))
-                        }
-                    </div>
-                </div>
-            </Paper>
+                                ))
+                            }
+                    </Card>
+            </div>
         );
     }
 
